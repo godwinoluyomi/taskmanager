@@ -1,12 +1,17 @@
 import React from 'react'
-import AntDTemp from './layout/AntDTemp'
-import NavBar from './components/NavBar'
-// import './App.css'
+import './App.css'
+import MainLayout from './layout/MainLayout'
+import TaskList from './components/TaskList'
+import Login from './pages/Login'
+import AuthLayout from './layout/AuthLayout'
 
 function App() {
   return (
     <>
-      <NavBar />
+
+      <AuthLayout />
+
+      {/* <MainLayout /> */}
     </>
   )
 }
