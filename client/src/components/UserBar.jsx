@@ -1,52 +1,79 @@
 import React, { useState } from 'react'
-import { UserOutlined, DownOutlined, SettingOutlined, LogoutOutlined } from '@ant-design/icons';
-import { Avatar, Badge, Dropdown, Space, Button, Modal, Input, DatePicker } from 'antd';
-
-const onChangeCalender = (date, dateString) => {
-    console.log(date, dateString);
-};
+import { UserOutlined, DownOutlined, SettingOutlined, LogoutOutlined, OrderedListOutlined } from '@ant-design/icons';
+import { Menu, Avatar, Badge, Dropdown, Space, Checkbox, Form, Button, Modal, Input, DatePicker } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser, selectUser } from '../redux/authSlice';
 
 const { TextArea } = Input;
 
-const items = [
-    {
-        key: '1',
-        label: (
-            <a rel="noopener noreferrer" href="#">
-                Profile Settings
-            </a>
-        ),
-        icon: <SettingOutlined />,
-        disabled: true,
-    },
-    {
-        key: '2',
-        label: (
-            <a rel="noopener noreferrer" href="#">
-                Logout
-            </a>
-        ),
-        icon: <LogoutOutlined />,
-    },
-];
-
 const UserBar = () => {
-
-    const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
+    // const [deadlineString, setDeadlineString] = useState('');
+
+    const { username, email } = useSelector(selectUser);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        dispatch(logoutUser());
+        navigate('/login');
+    }
+
     const showModal = () => {
         setOpen(true);
     };
-    /* const handleOk = () => {
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-            setOpen(false);
-        }, 3000);
-    }; */
+
+    // const onChangeCalender = (date, dateString) => {
+    //     console.log(dateString);
+    //     setDeadlineString(dateString); // Save the dateString in state
+    // };
+
     const handleCancel = () => {
         setOpen(false);
     };
+
+    //  onFinish function to dispatch the registerUser action directly with the form values instead of relying on the state update from setRegistrationData
+    const onFinish = (value) => {
+        let task = {
+            title: value.title,
+            description: value.description,
+            deadline: value["deadline"].format("YYYY-MM-DD")  //Add your required date format here
+        };
+        console.log(task);
+        // dispatch(registerUser(values));
+        // navigate("/");
+    };
+
+
+    const items = [
+        {
+            key: '1',
+            label: (
+                <Link to={'/tasks'}> My Tasks </Link>
+            ),
+            icon: <OrderedListOutlined />,
+            // disabled: true,
+        },
+        {
+            key: '2',
+            label: (
+                <Link to={'/profile'}> Profile </Link>
+            ),
+            icon: <SettingOutlined />,
+            // disabled: true,
+        },
+        {
+            key: '3',
+            label: (
+                <a rel="noopener noreferrer" onClick={handleLogout}>
+                    <span>Logout</span>
+                </a>
+            ),
+            icon: <LogoutOutlined />,
+        },
+    ];
 
 
     return (
@@ -60,30 +87,53 @@ const UserBar = () => {
                 <Modal
                     open={open}
                     title="NEW TASK"
-                    // onOk={handleOk}
                     onCancel={handleCancel}
                     footer={[
-                        <Button key="back" onClick={handleCancel}>
-                            Close
-                        </Button>,
-                        <Button
-                            key="link"
-                            href=""
-                            type="primary"
-                            loading={loading}
-                            // onClick={handleOk}
-                            className='tmButtonPrimary'
-                        >
-                            Save
-                        </Button>,
                     ]}
                 >
 
-                    <div className=' my-6 flex flex-col space-y-4 ' >
-                        <Input size="large" placeholder="Title" />
-                        <TextArea rows={4} placeholder="Description" maxLength={6} />
-                        <DatePicker size='large' placeholder='Deadline' className=' w-full' onChange={onChangeCalender} />
-                    </div>
+                    <Form
+                        name="normal_login"
+                        className="login-form"
+                        onFinish={onFinish}
+                    >
+                        <Form.Item
+                            name="title"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input task title!',
+                                },
+                            ]}
+                        >
+                            <Input size="large" placeholder="Title" />
+                        </Form.Item>
+                        <Form.Item name="description" >
+                            <TextArea rows={4} placeholder="Description" maxLength={6} />
+                        </Form.Item>
+                        <Form.Item
+                            name="deadline"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input task dealine!',
+                                },
+                            ]}
+                        >
+                            <DatePicker size='large' placeholder='Deadline' className=' w-full' format="YYYY-MM-DD" />
+                            {/* onChange={onChangeCalender} */}
+                        </Form.Item>
+
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" className="tmButtonPrimary login-form-button" size='large'>
+                                Save
+                            </Button>
+
+                        </Form.Item>
+                    </Form>
+
+                    {/* <div className=' my-6 flex flex-col space-y-4 ' >
+                    </div> */}
 
                 </Modal>
             </div>
@@ -102,7 +152,7 @@ const UserBar = () => {
                 >
                     <a onClick={(e) => e.preventDefault()}>
                         <Space>
-                            <span className=' ml-5 font-light text-lg'> Oluyomi Godwin </span>
+                            <span className=' ml-5 font-light text-lg'> {username ? username : 'Username'} </span>
                             <DownOutlined />
                         </Space>
                     </a>

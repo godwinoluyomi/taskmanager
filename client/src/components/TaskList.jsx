@@ -1,43 +1,35 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Task from './Task'
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTasks, selectTaskError, selectTasks } from '../redux/taskSlice';
+import { selectToken, selectUser } from '../redux/authSlice';
 
 
 const TaskList = () => {
 
-    const taskProperties = [
-        {
-            "id": 1231,
-            "title": "Lorem, ipsum dolor sit amet consectetur adipisicing elit, Delectus perferendis.",
-            "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit, Delectus perferendis.",
-            "deadline": "2024-01-22",
-            "status": 1,
-            "ribbon": {
-                "rText": "Pending",
-                "rColour": "blue",
-            }
-        },
-        {
-            "id": 121,
-            "title": "Delectus perferendis ipsum dolor sit amet consectetur adipisicing elit.",
-            "description": "Lorem, ipsum dolor sit amet consectetur adipisicing elit, Delectus perferendis.",
-            "deadline": "2024-01-24",
-            "status": 1,
-            "ribbon": {
-                "rText": "Done",
-                "rColour": "green",
-            }
-        },
-    ];
+    const dispatch = useDispatch();
+    // const userId = '65a6aaa09a745c1e9a835b4b';
+    const token = useSelector(selectToken);
+    const userId = useSelector(selectUser)._id;
+    // console.log(userId);
+
+    // Fetch tasks when the component mounts
+    useEffect(() => {
+        dispatch(fetchTasks({ userId, token }));
+    }, []);
+
+
+    // Access tasks from the Redux store
+    const tasks = useSelector(selectTasks);
+    const error = useSelector(selectTaskError);
+
+    // console.log(tasks);
 
     return (
         <>
             {
-                taskProperties.map((task) => <Task key={task.id} {...task} />)
+                tasks.map((task) => <Task key={task._id} {...task} />)
             }
-            <Task />
-            <Task />
-            <Task />
-            <Task />
         </>
     )
 }

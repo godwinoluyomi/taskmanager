@@ -16,6 +16,15 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+// Delete password from fetch user from the database
+userSchema.methods.toJSON = function () {
+  const user = this;
+  const userObject = user.toObject();
+
+  delete userObject.password;
+  return userObject;
+};
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;

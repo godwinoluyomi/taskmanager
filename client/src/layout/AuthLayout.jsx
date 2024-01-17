@@ -1,8 +1,6 @@
 import React from 'react'
 import { Col, Row } from 'antd';
-import Login from '../pages/Login';
-import Register from '../pages/Register';
-import ResetPassword from '../pages/ResetPassword';
+import { Outlet } from 'react-router-dom';
 
 const AuthLayout = () => {
     const onFinish = (values) => {
@@ -22,9 +20,7 @@ const AuthLayout = () => {
                         </div>
 
                         <div>
-                            <Login />
-                            <Register />
-                            <ResetPassword />
+                            <Outlet />
                         </div>
 
                     </div>

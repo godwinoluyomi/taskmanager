@@ -8,12 +8,18 @@ exports.register = async (req, res) => {
     const { username, email, password } = req.body;
     const user = new User({ username, email, password });
 
-    await user.save();
+    const savedUser = await user.save();
 
-    res.status(201).json({ message: "User registered successfully" });
+    res
+      .status(201)
+      .json({ message: "User registered successfully", user: savedUser });
   } catch (error) {
     console.error("Error:", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    // res.status(500).json({ error: "Internal Server Error" });
+    if (error.message.includes("duplicate key error ")) {
+      return res.status(409).json({ error: "User already registered" });
+    }
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -32,9 +38,9 @@ exports.login = async (req, res) => {
       expiresIn: "1h",
     });
 
-    res.status(200).json({ token });
+    res.status(200).json({ user: user, token: token, isAuthenticated: true });
   } catch (error) {
     console.error("Error:", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error.message });
   }
 };

@@ -2,7 +2,8 @@ import React from 'react'
 import { Col, Row } from 'antd';
 import NavBar from '../components/NavBar'
 import UserBar from '../components/UserBar'
-import TaskList from '../components/TaskList';
+import Tasks from '../pages/Tasks';
+import { Outlet } from 'react-router-dom';
 
 const MainLayout = () => {
     return (
@@ -18,7 +19,7 @@ const MainLayout = () => {
                     <Row>
                         {/* Space for outlet */}
                         <Col span={24}>
-                            <TaskList />
+                            <Outlet />
                         </Col>
                     </Row>
 

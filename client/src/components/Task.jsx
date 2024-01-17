@@ -10,9 +10,11 @@ const onChange = (e) => {
 const Task = ({ id, title, description, deadline, status, ribbon = {} }) => {
     const { rText, rColour } = ribbon;
 
+    // text = { rText? rText: "New" } color = { rColour? rColour: "black" }
+
     return (
         <>
-            <Badge.Ribbon text={rText ? rText : "New"} color={rColour ? rColour : "black"}>
+            <Badge.Ribbon text="Test" color="black">
                 <Card size="middle" className='shadow-md mt-5 bg-slate-50'>
                     <p className=' text-md text-lg mb-4'> {title ? title : "Default"}  </p>
 

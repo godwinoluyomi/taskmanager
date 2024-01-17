@@ -1,16 +1,35 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { LockOutlined, MailOutlined, LoginOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import { loginUser, selectAuthError, selectAuthStatus, selectUser } from '../redux/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Login = () => {
+    const navigate = useNavigate();
+    // const user = useSelector(selectUser);
+    const error = useSelector(selectAuthError);
+    const isAuthenticated = useSelector(selectAuthStatus);
+
+    const dispatch = useDispatch();
+
     const onFinish = (values) => {
-        console.log('Received values of form: ', values);
+        dispatch(loginUser(values));
+        // console.log('Received values of form: ', values);
     };
+
+    // Navigate to tasks page after user is stored in global state and isAutthen
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate("/tasks");
+        }
+    }, [isAuthenticated])
 
     return (
         <div>
 
             <p className=' font-extralight text-2xl mb-3'> LOGIN </p>
+            {error && <p> {error} </p>}
             <Form
                 name="normal_login"
                 className="login-form"
@@ -53,14 +72,12 @@ const Login = () => {
                         Login
                     </Button>
                     <span className=' float-right'>
-                        <a className="login-form-forgot" href="">
-                            Forgot password?
-                        </a>
+                        <Link className="login-form-forgot" to={'/reset-password'}> Forgot password? </Link>
                     </span>
 
                 </Form.Item>
                 <Form.Item>
-                    Don't have an account? <a href="#."> Register </a>
+                    Don't have an account? <Link to={'/register'}> Register </Link>
                 </Form.Item>
             </Form>
 

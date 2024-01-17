@@ -1,6 +1,7 @@
 import React from 'react'
 import { LockOutlined, UserOutlined, MailOutlined, LoginOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
+import { Link } from 'react-router-dom';
 
 const ResetPassword = () => {
     const onFinish = (values) => {
@@ -11,6 +12,7 @@ const ResetPassword = () => {
         <div>
 
             <p className=' font-extralight text-2xl mb-3'> RESET PASSWORD </p>
+            <p className=' text-red-500 font-extralight mb-3'> Still in development </p>
             <Form
                 name="normal_login"
                 className="login-form"
@@ -39,8 +41,8 @@ const ResetPassword = () => {
 
                 </Form.Item>
                 <Form.Item>
-                    <a href="#."> Login </a> OR
-                    <a href="#."> Register </a>
+                    <Link to={'/login'}> Login </Link> OR
+                    <Link to={'/register'}> Register </Link>
                 </Form.Item>
             </Form>
 

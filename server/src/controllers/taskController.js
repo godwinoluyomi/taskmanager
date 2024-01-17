@@ -4,7 +4,8 @@ const Task = require("../models/Task");
 exports.createTask = async (req, res) => {
   try {
     const { title, description, deadline } = req.body;
-    const userId = req.userId;
+    // const userId = req.userId;
+    const userId = req.params.userId;
     const task = new Task({ title, description, deadline, userId });
 
     await task.save();
@@ -18,7 +19,9 @@ exports.createTask = async (req, res) => {
 
 // Get TaskByUser Controller
 exports.getTaskByUser = async (req, res) => {
-  const userId = req.userId;
+  // const userId = req.userId;
+  const userId = req.params.userId;
+  // console.log(userId);
 
   try {
     const tasks = await Task.find({ userId });
@@ -32,6 +35,7 @@ exports.getTaskByUser = async (req, res) => {
 
 // Update Task Controller
 exports.updateTask = async (req, res) => {
+  // const userId = req.params.userId;
   const taskId = req.params.id;
 
   try {

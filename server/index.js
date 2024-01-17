@@ -11,6 +11,13 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
+/* app.use(
+  cors({
+    origin: "http://localhost:5173",
+    withCredentials: true,
+    methods: ["GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE"],
+  })
+); */
 app.use(bodyParser.json());
 // app.use(express.json()); // Can be used instead of body-parser.
 
