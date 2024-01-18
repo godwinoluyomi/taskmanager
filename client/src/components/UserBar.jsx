@@ -3,7 +3,8 @@ import { UserOutlined, DownOutlined, SettingOutlined, LogoutOutlined, OrderedLis
 import { Menu, Avatar, Badge, Dropdown, Space, Checkbox, Form, Button, Modal, Input, DatePicker } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logoutUser, selectUser } from '../redux/authSlice';
+import { logoutUser, selectToken, selectUser } from '../redux/authSlice';
+import { createTask } from '../redux/taskSlice';
 
 const { TextArea } = Input;
 
@@ -12,6 +13,7 @@ const UserBar = () => {
     // const [deadlineString, setDeadlineString] = useState('');
 
     const { username, email } = useSelector(selectUser);
+    const token = useSelector(selectToken);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -41,11 +43,22 @@ const UserBar = () => {
             description: value.description,
             deadline: value["deadline"].format("YYYY-MM-DD")  //Add your required date format here
         };
-        console.log(task);
-        // dispatch(registerUser(values));
+        const taskData = {
+            task: task,
+            token: token,
+        }
+        console.log(taskData);
+        dispatch(createTask(taskData));
+        handleCancel();
         // navigate("/");
+
+        // Reset the form fields
+        form.resetFields();
+
     };
 
+
+    const [form] = Form.useForm();  // Add this line to create a form instance
 
     const items = [
         {
@@ -75,7 +88,6 @@ const UserBar = () => {
         },
     ];
 
-
     return (
         <div className='mt-6 mb-6'>
             <div className='flex float-left'>
@@ -88,11 +100,11 @@ const UserBar = () => {
                     open={open}
                     title="NEW TASK"
                     onCancel={handleCancel}
-                    footer={[
-                    ]}
+                    footer={null}
                 >
 
                     <Form
+                        form={form}  // Pass the form instance to the Form component
                         name="normal_login"
                         className="login-form"
                         onFinish={onFinish}
@@ -109,7 +121,7 @@ const UserBar = () => {
                             <Input size="large" placeholder="Title" />
                         </Form.Item>
                         <Form.Item name="description" >
-                            <TextArea rows={4} placeholder="Description" maxLength={6} />
+                            <TextArea rows={4} placeholder="Description" />
                         </Form.Item>
                         <Form.Item
                             name="deadline"
