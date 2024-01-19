@@ -1,40 +1,95 @@
-POST http://localhost:3000/auth/register
+# Taskmanager
+
+## App URL
+https://taskmanagerapp-theta.vercel.app
+
+## API Documentation
+BASE URL: https://taskmanager-lime.vercel.app
+
+### Register
+POST /auth/register
+```
 {
 "username": "Test User",
-"email": "testuser@email.com",
+"email": "testuser@mail.com",
 "password": "default"
 }
-
-POST http://localhost:3000/auth/login
+```
+Response
+```
 {
-"email": "testuser@email.com",
+message: "User registered successfully",
+user: {
+        "_id": "****",
+        "username": "Test User",
+        "email": "testuser@mail.com",
+        "__v": 0
+    },
+}
+```
+### Login
+POST auth/login
+```
+{
+"email": "testuser@mail.com",
 "password": "default"
 }
-
+```
+Response
+```
 {
-"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWE2YWFhMDlhNzQ1YzFlOWE4MzViNGIiLCJpYXQiOjE3MDU0MjE1OTEsImV4cCI6MTcwNTQyNTE5MX0.n1SWfh-bc-\_-eBIvAUVDCnW3qwXqgqwUa3jlQqzupio"
+    "user": {
+        "_id": "****",
+        "username": "Test User",
+        "email": "testuser@mail.com",
+        "__v": 0
+    },
+    "token": "****",
+    "isAuthenticated": true
 }
+```
+### ADD TASK
+POST: /tasks
 
-TASK
-POST: http://localhost:3000/tasks/
-Header - Authorization: user token
+Header - Authorization: token
+```
 {
 "title": "Buy Rice",
 "description":"Go to market",
 "deadline": "2024-01-30"
 }
+```
 
-GET: http://localhost:3000/tasks/user/65a6aaa09a745c1e9a835b4b
-Header - Authorization: user token
+### FETCH USER TASK
+GET: /tasks/user/****
 
-GET: http://localhost:3000/tasks/today/65a6aaa09a745c1e9a835b4b
-Header - Authorization: user token
+Response
+```
+[
+    {
+        "_id": "***",
+        "title": "Buy clothes",
+        "deadline": "2024-01-27T00:00:00.000Z",
+        "status": false,
+        "userId": "***",
+        "createdAt": "2024-01-19T09:12:46.224Z",
+        "__v": 0
+    },
+]
+```
 
-PUT: http://localhost:3000/tasks/65a6ac42ffdb849a8d5f8532
-Header - Authorization: user token
-{
-"title": "Buy Rice market",
-"description":"Go to store store store",
-"deadline": "2024-02-08",
-"status": true
-}
+Header - Authorization: token
+
+### FETCH USER TASK TODAY
+GET: /tasks/today/****
+
+Header - Authorization: token
+
+Response is same a Fetch User Task
+
+### UPDATE USER TASK
+PUT: /tasks/****
+
+Header - Authorization: token
+
+Response is same a Fetch User Task
