@@ -127,7 +127,7 @@ const TaskList = () => {
                 </Col>
             </Row>
             {
-                tasks.map((task) => <Task key={task._id} {...task} />)
+                tasks?.map((task) => <Task key={task._id} {...task} />)
             }
         </>
     )
