@@ -27,6 +27,10 @@ app.use(bodyParser.json());
 // MongoDB Connection
 connectDB();
 
+app.get("/", function (req, res) {
+  res.status(200).send({ message: "working" });
+});
+
 // Routes
 app.use("/auth", authRoutes);
 app.use("/tasks", taskRoutes);

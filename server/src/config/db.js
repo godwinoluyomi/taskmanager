@@ -7,12 +7,7 @@ const mongoose = require("mongoose");
 const connectDB = async () => {
   try {
     // Localhost Connection to Mongoose
-    const connection = await mongoose.connect(process.env.MONGO_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      // useFindAndModify: false,
-      // useCreateIndex: true,
-    });
+    const connection = await mongoose.connect(process.env.MONGO_URL);
 
     // Connect to Mongo Atlas
     /* const connection = await mongoose.connect(
