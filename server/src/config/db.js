@@ -1,18 +1,18 @@
 require("dotenv").config(); // Load environment variables
 const mongoose = require("mongoose");
 
+// MONGO_URL=mongodb://localhost/taskmanager
+// MONGO_URL=mongodb+srv://godwinoluyomi:godwin6205@cluster0.igdqoyv.mongodb.net/taskmanager
+
 const connectDB = async () => {
   try {
     // Localhost Connection to Mongoose
-    const connection = await mongoose.connect(
-      "mongodb://localhost:27017/taskmanager",
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        // useFindAndModify: false,
-        // useCreateIndex: true,
-      }
-    );
+    const connection = await mongoose.connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      // useFindAndModify: false,
+      // useCreateIndex: true,
+    });
 
     // Connect to Mongo Atlas
     /* const connection = await mongoose.connect(
